@@ -1,0 +1,24 @@
+#
+# Copyright (c) 2019 Stackinsights to present
+# All rights reserved
+#
+
+# Legacy metrics query protocol
+# Replaced by the metrics-v2 in the future
+
+type TopNEntity {
+    name: String!
+    id: ID!
+    value: Long!
+}
+
+# The aggregation query is different with the metric query.
+# All aggregation queries require backend or/and storage do aggregation in query time.
+extend type Query {
+    # TopN is an aggregation query.
+    getServiceTopN(name: String!, topN: Int!, duration: Duration!, order: Order!): [TopNEntity!]!
+    getAllServiceInstanceTopN(name: String!, topN: Int!, duration: Duration!, order: Order!): [TopNEntity!]!
+    getServiceInstanceTopN(serviceId: ID!, name: String!, topN: Int!, duration: Duration!, order: Order!): [TopNEntity!]!
+    getAllEndpointTopN(name: String!, topN: Int!, duration: Duration!, order: Order!): [TopNEntity!]!
+    getEndpointTopN(serviceId: ID!, name: String!, topN: Int!, duration: Duration!, order: Order!): [TopNEntity!]!
+}

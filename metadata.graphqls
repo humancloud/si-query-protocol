@@ -1,0 +1,36 @@
+#
+# Copyright (c) 2019 Stackinsights to present
+# All rights reserved
+#
+
+# Legacy metrics query protocol
+# Replaced by the metadata-v2 in the future
+
+type Database {
+    id: ID!
+    name: String!
+    type: String!
+}
+
+extend type Query {
+    # Normal service related meta info 
+    getAllServices(duration: Duration!, group: String): [Service!]!
+    searchServices(duration: Duration!, keyword: String!): [Service!]!
+    searchService(serviceCode: String!): Service
+    
+    # Fetch all services of Browser type
+    getAllBrowserServices(duration: Duration!): [Service!]!
+    searchBrowserServices(duration: Duration!, keyword: String!): [Service!]!
+    searchBrowserService(serviceCode: String!): Service
+
+    # Service instance query
+    getServiceInstances(duration: Duration!, serviceId: ID!): [ServiceInstance!]!
+
+    # Endpoint query
+    # Consider there are huge numbers of endpoint,
+    # must use endpoint owner's service id, keyword and limit filter to do query.
+    searchEndpoint(keyword: String!, serviceId: ID!, limit: Int!): [Endpoint!]!
+
+    # Database related meta info.
+    getAllDatabases(duration: Duration!): [Database!]!
+}

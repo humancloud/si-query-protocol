@@ -1,0 +1,51 @@
+#
+# Copyright (c) 2019 Stackinsights to present
+# All rights reserved
+#
+
+# Represent the conditions used for query BrowserErrorLogBrief
+input BrowserErrorLogQueryCondition {
+    # The value of 0 means all services.
+    serviceId: ID
+    serviceVersionId: ID
+    pagePathId: ID
+    category: ErrorCategory
+    # The time range of browser perf data time
+    queryDuration: Duration
+    paging: Pagination!
+}
+
+# The list of browser error log
+type BrowserErrorLogs {
+    logs: [BrowserErrorLog!]!
+}
+
+# Represent the browser error log
+type BrowserErrorLog {
+    service: String!
+    serviceVersion: String!
+    time: Long!
+    pagePath: String!
+    category: ErrorCategory!
+    grade: String
+    message: String
+    line: Int
+    col: Int
+    stack: String
+    errorUrl: String
+    firstReportedError: Boolean!
+}
+
+enum ErrorCategory {
+    ALL,
+    AJAX,
+    RESOURCE,
+    VUE,
+    PROMISE,
+    JS,
+    UNKNOWN
+}
+
+extend type Query {
+    queryBrowserErrorLogs(condition: BrowserErrorLogQueryCondition): BrowserErrorLogs
+}

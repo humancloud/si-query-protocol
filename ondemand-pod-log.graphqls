@@ -1,0 +1,36 @@
+#
+# Copyright (c) 2019 Stackinsights to present
+# All rights reserved
+#
+
+# Ondemand Pod log: fetch the Pod logs on users' demand, the logs
+# are fetched and displayed in real time, and are not persisted
+# in any kind. This is helpful when users want to do some experiments
+# and monitor the logs and see what's happing inside the service.
+# Note: if you print secrets in the logs they are also visible to
+# the UI so this feature is disabled by default, please read the
+# configuration documentation to enable this manually.
+
+input OndemandLogQueryCondition {
+    serviceInstanceId: ID
+    container: String!
+    duration: Duration
+    keywordsOfContent: [String!]
+    excludingKeywordsOfContent: [String!]
+}
+
+input OndemandContainergQueryCondition {
+    serviceInstanceId: ID
+}
+
+type PodContainers {
+    # When this field is not empty, frontend should display it in UI
+    errorReason: String
+
+    containers: [String!]!
+}
+
+extend type Query {
+    listContainers(condition: OndemandContainergQueryCondition): PodContainers
+    ondemandPodLogs(condition: OndemandLogQueryCondition): Logs
+}

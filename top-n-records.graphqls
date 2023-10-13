@@ -1,0 +1,33 @@
+#
+# Copyright (c) 2019 Stackinsights to present
+# All rights reserved
+#
+
+# Top N record query is different with aggregation Query.
+# Both of query results are top N, but aggregation topN query needs to do aggregation at query stage,
+# the top N record query is just do order and get the list.
+
+# Legacy metrics query protocol
+# Replaced by the metrics-v2 in the future
+
+# Top N query is based on latency order by given service and metric name.
+input TopNRecordsCondition {
+    serviceId: ID!
+    metricName: String!
+    topN: Int!
+    # Top N order, ASC or DES.
+    order: Order!
+    duration: Duration!
+}
+
+type TopNRecord {
+    statement: String
+    latency: Long!
+    # Have value, Only if the record has the trace id.
+    # Slow record
+    traceId: String
+}
+
+extend type Query {
+    getTopNRecords(condition: TopNRecordsCondition!): [TopNRecord!]!
+}

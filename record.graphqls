@@ -1,0 +1,37 @@
+#
+# Copyright (c) 2019 Stackinsights to present
+# All rights reserved
+#
+
+# Legacy record query protocol deprecated since 9.5.0. Replaced by the metrics-v3.
+# Since 9.3.0
+# Record is a general and abstract type for collected raw data.
+# In the observability, traces and logs have specific and well-defined meanings, and the general records represent other
+# collected records. Such as sampled slow SQL statement, HTTP request raw data(request/response header/body)
+extend type Query {
+    # Query collected records with given metric name and parent entity conditions, and return in the requested order.
+    readRecords(condition: RecordCondition!, duration: Duration!): [Record!]!
+}
+
+input RecordCondition {
+    # Metrics name
+    # The scope of this metric is required to match the scope of the parent entity.
+    name: String!
+    # Follow entity definition description.
+    # The owner of the sampled records
+    parentEntity: Entity!
+    topN: Int!
+    order: Order!
+}
+
+type Record {
+    # Literal string name for visualization
+    name: String!
+    # ID of this record
+    id: ID!
+    # Usually an integer value as this is a metric to measure this entity ID.
+    value: String
+    # Have value, Only if the record has related trace id.
+    # UI should show this as an attached value.
+    refId: ID
+}

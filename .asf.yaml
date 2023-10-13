@@ -1,0 +1,19 @@
+
+#
+# Copyright (c) 2019 Stackinsights to present
+# All rights reserved
+#
+
+github:
+  description: Query Protocol for Apache StackInsights in GraphQL format
+  homepage: https://stackinsights.apache.org/docs/main/next/en/protocols/query-protocol/
+  labels:
+    - stackinsights
+    - observability
+    - apm
+  enabled_merge_buttons:
+    squash:  true
+    merge:   false
+    rebase:  false
+  protected_branches:
+    master:

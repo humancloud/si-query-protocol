@@ -1,0 +1,56 @@
+#
+# Copyright (c) 2019 Stackinsights to present
+# All rights reserved
+#
+
+type Event {
+    uuid: String!
+    source: Source!
+    name: String!
+    type: EventType!
+    message: String
+    parameters: [KeyValue!]
+    # The start time (in milliseconds) of the event, measured between the current time and midnight, January 1, 1970 UTC.
+    # This field may be 0 if the user didn't report it or the `start` event is lost due to network issues.
+    startTime: Long!
+    # The end time (in milliseconds) of the event, measured between the current time and midnight, January 1, 1970 UTC. Empty or 0 if the event have not finished yet.
+    # This field may be 0 if the user didn't report it or the `end` event is lost due to network issues.
+    endTime: Long
+    layer: String!
+}
+
+type Source {
+    service: String
+    serviceInstance: String
+    endpoint: String
+}
+
+input SourceInput {
+    service: String
+    serviceInstance: String
+    endpoint: String
+}
+
+enum EventType {
+    Normal
+    Error
+}
+
+type Events {
+    events: [Event!]!
+}
+
+input EventQueryCondition {
+    uuid: String
+    source: SourceInput
+    name: String
+    type: EventType
+    time: Duration
+    order: Order
+    layer: String
+    paging: Pagination!
+}
+
+extend type Query {
+    queryEvents(condition: EventQueryCondition): Events
+}
